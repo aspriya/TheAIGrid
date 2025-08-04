@@ -1,15 +1,35 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSession } from 'next-auth/react';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
 import ProfileForm from './ProfileForm';
 
 const ProfileView = () => {
-  const { user } = useAuth();
+  const { data: session } = useSession();
   const [isEditing, setIsEditing] = useState(false);
+
+  // For now, we'll create a user object from session data
+  // Later you might want to fetch additional user data from your database
+  const user = session?.user ? {
+    id: session.user.email, // Using email as ID for now
+    name: session.user.name,
+    email: session.user.email,
+    image: session.user.image,
+    // Add default values for other fields that your existing UI expects
+    bio: "Welcome to TheAIGrid! Complete your profile to connect with other AI creators.",
+    expertise: [],
+    lookingFor: [],
+    projects: [],
+    role: "Creator",
+    joinedDate: new Date().toISOString().split('T')[0],
+    location: "",
+    website: "",
+    twitter: "",
+    linkedin: ""
+  } : null;
 
   if (!user) {
     return (

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSession } from 'next-auth/react';
 import { mockProjects } from '@/data/mockData';
 import PageContainer from '@/components/layout/PageContainer';
 import ProjectGrid from '@/components/projects/ProjectGrid';
@@ -10,7 +10,7 @@ import { UserGroupIcon, HandRaisedIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
 export default function CollaboratePage() {
-  const { user } = useAuth();
+  const { data: session } = useSession();
   
   // Filter projects that are seeking collaboration
   const collaborativeProjects = mockProjects.filter(project => 
@@ -36,7 +36,7 @@ export default function CollaboratePage() {
             and build amazing things together.
           </p>
           
-          {user ? (
+          {session ? (
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/projects/create">
                 <Button className="px-8 py-3 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 flex items-center gap-2">
@@ -47,9 +47,9 @@ export default function CollaboratePage() {
               <Link href="/projects">
                 <Button 
                   variant="outline" 
-                  className="px-8 py-3 border-2"
+                  className="px-8 py-3 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 flex items-center gap-2"
                 >
-                  Browse All Projects
+                  View All Projects
                 </Button>
               </Link>
             </div>
@@ -59,12 +59,12 @@ export default function CollaboratePage() {
                 Join our community to start collaborating with other developers
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/register">
+                <Link href="/auth">
                   <Button className="px-8 py-3 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700">
                     Get Started
                   </Button>
                 </Link>
-                <Link href="/login">
+                <Link href="/auth">
                   <Button variant="outline" className="px-8 py-3 border-2">
                     Sign In
                   </Button>
@@ -115,12 +115,12 @@ export default function CollaboratePage() {
           title="Collaboration Opportunities"
           showFilters={true}
           showSearch={true}
-          currentUser={user}
+          currentUser={session?.user}
         />
       </div>
 
       {/* Bottom CTA */}
-      {!user && (
+      {!session && (
         <div className="mt-16 text-center py-12 bg-gray-900 rounded-2xl">
           <div className="max-w-2xl mx-auto px-6">
             <h2 className="text-3xl font-bold text-white mb-4">
@@ -130,12 +130,12 @@ export default function CollaboratePage() {
               Join our community of developers building the future of AI together.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/register">
+              <Link href="/auth">
                 <Button className="px-8 py-3 bg-white text-gray-900 hover:bg-gray-100">
-                  Create Account
+                  Get Started
                 </Button>
               </Link>
-              <Link href="/login">
+              <Link href="/auth">
                 <Button 
                   variant="outline" 
                   className="px-8 py-3 border-gray-400 text-gray-300 hover:bg-gray-800"

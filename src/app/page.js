@@ -3,6 +3,7 @@ import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import ProjectCard from "@/components/ui/ProjectCard";
 import PageContainer from "@/components/layout/PageContainer";
+import Link from "next/link";
 import { mockProjects, mockUsers } from "@/data/mockData";
 
 export default function Home() {
@@ -34,45 +35,49 @@ export default function Home() {
               </span>
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-10 py-4 text-lg shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 transition-all duration-300 rounded-2xl min-w-[200px]"
-              >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+              <Link href="/projects">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-10 py-4 text-lg shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 transition-all duration-300 rounded-2xl min-w-[200px]"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-                Browse Projects
-              </Button>
-              <Button
-                variant="secondary"
-                size="lg"
-                className="bg-white/90 backdrop-blur-sm border-2 border-gray-200 hover:border-blue-300 text-gray-800 hover:text-blue-600 font-bold px-10 py-4 text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 rounded-2xl min-w-[200px]"
-              >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                  Explore Projects
+                </Button>
+              </Link>
+              <Link href="/projects/create">
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className="bg-white/90 backdrop-blur-sm border-2 border-gray-200 hover:border-blue-300 text-gray-800 hover:text-blue-600 font-bold px-10 py-4 text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 rounded-2xl min-w-[200px]"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                  />
-                </svg>
-                Post Your Project
-              </Button>
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    />
+                  </svg>
+                  Post Your Project
+                </Button>
+              </Link>
             </div>
           </div>
         </PageContainer>

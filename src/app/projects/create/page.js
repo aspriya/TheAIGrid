@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSession } from 'next-auth/react';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import PageContainer from '@/components/layout/PageContainer';
 import ProjectForm from '@/components/projects/ProjectForm';
 
 export default function CreateProjectPage() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSave = async (projectData) => {
@@ -19,7 +19,7 @@ export default function CreateProjectPage() {
       // Add creator information
       const newProject = {
         ...projectData,
-        createdBy: user.name
+        createdBy: session?.user?.name || 'Anonymous'
       };
 
       // Here you would typically save to your backend

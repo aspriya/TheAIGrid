@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSession } from 'next-auth/react';
 import { mockProjects } from '@/data/mockData';
 import PageContainer from '@/components/layout/PageContainer';
 import ProjectDetail from '@/components/projects/ProjectDetail';
@@ -13,7 +13,7 @@ import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 export default function ProjectDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const { user } = useAuth();
+  const { data: session } = useSession();
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -43,8 +43,8 @@ export default function ProjectDetailPage() {
   };
 
   const handleContact = async (project, collaboration = null, type = 'collaboration') => {
-    if (!user) {
-      router.push('/login');
+    if (!session?.user) {
+      router.push('/auth');
       return;
     }
 

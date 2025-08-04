@@ -6,9 +6,8 @@ import PageContainer from './PageContainer';
 const Footer = () => {
   const navigation = {
     platform: [
-      { name: 'Browse Projects', href: '/browse' },
-      { name: 'Search', href: '/search' },
-      { name: 'Post Project', href: '/projects/new' },
+      { name: 'All Projects', href: '/projects' },
+      { name: 'Post Project', href: '/projects/create' },
       { name: 'How it Works', href: '/how-it-works' }
     ],
     community: [

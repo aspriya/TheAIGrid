@@ -2,86 +2,102 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSession, signOut } from 'next-auth/react';
 import Button from '../ui/Button';
 import Avatar from '../ui/Avatar';
 import PageContainer from './PageContainer';
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { data: session, status } = useSession();
 
   const navigation = [
     { name: 'Projects', href: '/projects' },
-    { name: 'Browse', href: '/browse' },
-    { name: 'Search', href: '/search' },
     { name: 'About', href: '/about' }
   ];
 
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: '/' });
+  };
+
   return (
-    <header className="bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100 sticky top-0 z-50">
+    <header className="bg-white/98 backdrop-blur-xl shadow-xl border-b border-slate-200/60 sticky top-0 z-50 transition-all duration-300">
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 via-white to-purple-50/30"></div>
       <PageContainer>
-        <div className="flex justify-between items-center h-20">
+        <div className="relative flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-3 group">
-              <div className="h-12 w-12 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transform group-hover:scale-105 transition-all duration-300">
-                <span className="text-white font-bold text-xl">T</span>
+            <Link href="/" className="flex items-center space-x-2 md:space-x-4 group">
+              <div className="relative">
+                <div className="h-10 w-10 md:h-14 md:w-14 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-600 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg md:shadow-xl group-hover:shadow-2xl transform group-hover:scale-105 transition-all duration-500 border border-white/20">
+                  <span className="text-white font-bold text-lg md:text-2xl">T</span>
+                </div>
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl md:rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 blur"></div>
               </div>
               <div className="flex flex-col">
-                <span className="text-2xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
+                <span className="text-lg md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-slate-900 via-blue-800 to-purple-800 bg-clip-text text-transparent tracking-tight">
                   TheAIGrid
                 </span>
-                <span className="text-xs text-gray-500 font-medium -mt-1">AI Project Marketplace</span>
+                <span className="text-[10px] md:text-xs text-slate-500 font-semibold -mt-1 tracking-wide uppercase">
+                  AI Project Marketplace
+                </span>
               </div>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-10">
+          <nav className="hidden md:flex items-center space-x-12">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-700 hover:text-blue-600 font-medium text-lg transition-all duration-200 relative group py-2"
+                className="relative text-slate-700 hover:text-blue-600 font-semibold text-lg transition-all duration-300 group py-3 px-2"
               >
-                {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
+                <span className="relative z-10">{item.name}</span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full rounded-full"></span>
+                <span className="absolute inset-0 bg-blue-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 -z-10"></span>
               </Link>
             ))}
           </nav>
 
           {/* Right side - Auth/User */}
-          <div className="flex items-center space-x-2 md:space-x-4">
-            {user ? (
-              <div className="flex items-center space-x-2 md:space-x-4">
+          <div className="flex items-center space-x-2 md:space-x-6">
+            {session ? (
+              <div className="flex items-center space-x-2 md:space-x-5">
                 <Link href="/projects/create">
                   <Button 
                     variant="ghost" 
                     size="sm"
-                    className="hidden md:flex font-semibold text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 md:px-6"
+                    className="hidden md:flex font-bold text-slate-700 hover:text-blue-600 hover:bg-blue-50 px-6 py-2.5 rounded-xl transition-all duration-300 border border-transparent hover:border-blue-200"
                   >
-                    Post Project
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Launch Project
                   </Button>
                 </Link>
                 <div className="relative">
                   <Link href="/profile">
-                    <button className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 bg-gray-50 hover:bg-gray-100 rounded-full px-3 py-2 transition-all duration-200">
+                    <button className="flex items-center space-x-2 md:space-x-3 text-slate-700 hover:text-slate-900 bg-slate-50/80 hover:bg-slate-100 rounded-xl md:rounded-2xl px-2 md:px-4 py-1.5 md:py-2.5 transition-all duration-300 border border-slate-200/50 hover:border-slate-300 shadow-sm hover:shadow-md">
                       <Avatar
-                        name={user.name}
+                        src={session.user?.image}
+                        name={session.user?.name || 'User'}
                         size="sm"
                       />
-                      <span className="hidden lg:block text-sm font-medium max-w-24 truncate">{user.name}</span>
+                      <span className="hidden lg:block text-sm font-semibold max-w-28 truncate text-slate-700">{session.user?.name}</span>
+                      <svg className="hidden lg:block w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
                     </button>
                   </Link>
                 </div>
                 <Button 
                   variant="ghost" 
                   size="sm"
-                  onClick={logout}
-                  className="text-gray-600 hover:text-red-600 px-2 md:px-4"
+                  onClick={handleSignOut}
+                  className="text-slate-600 hover:text-red-600 hover:bg-red-50 px-2 md:px-4 py-1.5 md:py-2.5 rounded-lg md:rounded-xl transition-all duration-300 border border-transparent hover:border-red-200"
                 >
-                  <span className="hidden md:inline">Sign Out</span>
+                  <span className="hidden md:inline font-medium">Sign Out</span>
                   <span className="md:hidden">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -91,20 +107,20 @@ const Header = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-2 md:space-x-4">
-                <Link href="/login">
+                <Link href="/auth">
                   <Button 
                     variant="ghost" 
                     size="sm"
-                    className="font-semibold text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-3 md:px-6"
+                    className="font-bold text-slate-700 hover:text-blue-600 hover:bg-blue-50 px-3 md:px-6 py-1.5 md:py-2.5 rounded-lg md:rounded-xl transition-all duration-300 border border-transparent hover:border-blue-200"
                   >
                     <span className="hidden sm:inline">Sign In</span>
                     <span className="sm:hidden text-xs">Login</span>
                   </Button>
                 </Link>
-                <Link href="/register">
+                <Link href="/auth">
                   <Button 
                     size="sm"
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold px-4 md:px-8 py-2 md:py-3 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 text-xs md:text-sm"
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-3 md:px-8 py-1.5 md:py-3 shadow-lg md:shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 text-xs md:text-sm rounded-lg md:rounded-xl border border-white/20"
                   >
                     <span className="hidden sm:inline">Get Started</span>
                     <span className="sm:hidden">Join</span>
@@ -115,11 +131,11 @@ const Header = () => {
 
             {/* Mobile menu button */}
             <button
-              className="md:hidden"
+              className="md:hidden p-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-all duration-300"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               <svg
-                className="h-6 w-6"
+                className="h-5 w-5 text-slate-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -146,47 +162,53 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200">
-            <div className="space-y-3">
+          <div className="md:hidden py-6 border-t border-slate-200/60 bg-slate-50/50 backdrop-blur-sm">
+            <div className="space-y-4">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="block text-gray-600 hover:text-gray-900 transition-colors duration-200 py-2"
+                  className="block text-slate-600 hover:text-blue-600 transition-colors duration-300 py-3 px-4 rounded-xl hover:bg-blue-50 font-semibold"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.name}
                 </Link>
               ))}
-              {user && (
-                <div className="space-y-2 pt-3 border-t border-gray-200">
-                  <Link href="/post-project">
-                    <Button variant="ghost" size="sm" className="w-full" onClick={() => setMobileMenuOpen(false)}>
-                      Post Project
+              {session && (
+                <div className="space-y-3 pt-4 border-t border-slate-200">
+                  <Link href="/projects/create">
+                    <Button variant="ghost" size="sm" className="w-full justify-start font-semibold" onClick={() => setMobileMenuOpen(false)}>
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                      Launch Project
                     </Button>
                   </Link>
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="w-full text-red-600 hover:text-red-700"
+                    className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50 font-semibold"
                     onClick={() => {
-                      logout();
+                      handleSignOut();
                       setMobileMenuOpen(false);
                     }}
                   >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
                     Sign Out
                   </Button>
                 </div>
               )}
-              {!user && (
-                <div className="space-y-2 pt-3 border-t border-gray-200">
-                  <Link href="/login">
-                    <Button variant="ghost" size="sm" className="w-full" onClick={() => setMobileMenuOpen(false)}>
+              {!session && (
+                <div className="space-y-3 pt-4 border-t border-slate-200">
+                  <Link href="/auth">
+                    <Button variant="ghost" size="sm" className="w-full justify-start font-semibold" onClick={() => setMobileMenuOpen(false)}>
                       Sign In
                     </Button>
                   </Link>
-                  <Link href="/register">
-                    <Button size="sm" className="w-full" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/auth">
+                    <Button size="sm" className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 font-bold" onClick={() => setMobileMenuOpen(false)}>
                       Get Started
                     </Button>
                   </Link>

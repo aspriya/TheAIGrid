@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSession } from 'next-auth/react';
 import { mockProjects } from '@/data/mockData';
 import PageContainer from '@/components/layout/PageContainer';
 import ProjectGrid from '@/components/projects/ProjectGrid';
@@ -10,7 +10,7 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
 export default function ProjectsPage() {
-  const { user } = useAuth();
+  const { data: session } = useSession();
   const [projects] = useState(mockProjects);
 
   return (
@@ -22,40 +22,40 @@ export default function ProjectsPage() {
             Discover Amazing AI Projects
           </h1>
           <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-            Explore innovative AI projects, find collaboration opportunities, 
-            and discover solutions built by the community.
+            Explore, search, and discover innovative AI projects. Find collaboration opportunities 
+            and solutions built by the community.
           </p>
           
-          {user ? (
+          {session ? (
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/projects/create">
-                <Button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 flex items-center gap-2">
-                  <PlusIcon className="w-5 h-5" />
+                <Button className="px-10 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 text-white font-bold text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 rounded-xl border border-white/20 flex items-center gap-3 relative overflow-hidden">
+                  <PlusIcon className="w-6 h-6" />
                   Share Your Project
                 </Button>
               </Link>
               <Link href="/collaborate">
                 <Button 
                   variant="outline" 
-                  className="px-8 py-3 border-2"
+                  className="px-10 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 text-white font-bold text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 rounded-xl border border-white/20 flex items-center gap-3 relative overflow-hidden"
                 >
                   Find Collaborations
                 </Button>
               </Link>
             </div>
           ) : (
-            <div className="space-y-4">
-              <p className="text-gray-700 font-medium">
+            <div className="space-y-6">
+              <p className="text-gray-700 font-medium text-lg">
                 Join our community to share your projects and collaborate with others
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/register">
-                  <Button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                <Link href="/auth">
+                  <Button className="px-10 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 text-white font-bold text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 rounded-xl border border-white/20">
                     Get Started
                   </Button>
                 </Link>
-                <Link href="/login">
-                  <Button variant="outline" className="px-8 py-3 border-2">
+                <Link href="/auth">
+                  <Button variant="outline" className="px-8 py-4 border-2 border-slate-300 hover:border-blue-500 text-slate-700 hover:text-blue-600 hover:bg-blue-50 font-semibold text-lg rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl">
                     Sign In
                   </Button>
                 </Link>
@@ -83,7 +83,7 @@ export default function ProjectsPage() {
           title=""
           showFilters={false}
           showSearch={false}
-          currentUser={user}
+          currentUser={session?.user}
         />
       </div>
 
@@ -94,12 +94,12 @@ export default function ProjectsPage() {
           title="All Projects"
           showFilters={true}
           showSearch={true}
-          currentUser={user}
+          currentUser={session?.user}
         />
       </div>
 
       {/* Bottom CTA */}
-      {!user && (
+      {!session && (
         <div className="mt-16 text-center py-12 bg-gray-900 rounded-2xl">
           <div className="max-w-2xl mx-auto px-6">
             <h2 className="text-3xl font-bold text-white mb-4">
@@ -109,12 +109,12 @@ export default function ProjectsPage() {
               Join thousands of developers showcasing their AI projects and finding collaborators.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/register">
+              <Link href="/auth">
                 <Button className="px-8 py-3 bg-white text-gray-900 hover:bg-gray-100">
                   Create Account
                 </Button>
               </Link>
-              <Link href="/login">
+              <Link href="/auth">
                 <Button 
                   variant="outline" 
                   className="px-8 py-3 border-gray-400 text-gray-300 hover:bg-gray-800"

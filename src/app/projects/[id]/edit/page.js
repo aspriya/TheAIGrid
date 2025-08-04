@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSession } from 'next-auth/react';
 import { mockProjects } from '@/data/mockData';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import PageContainer from '@/components/layout/PageContainer';
@@ -14,7 +14,7 @@ import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 export default function EditProjectPage() {
   const params = useParams();
   const router = useRouter();
-  const { user } = useAuth();
+  const { data: session } = useSession();
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +26,7 @@ export default function EditProjectPage() {
     
     if (foundProject) {
       // Check if user owns this project
-      if (user && foundProject.createdBy === user.name) {
+      if (session?.user && foundProject.createdBy === session.user.name) {
         setProject(foundProject);
       } else {
         // Redirect if not owner
@@ -36,7 +36,7 @@ export default function EditProjectPage() {
     }
     
     setLoading(false);
-  }, [params.id, user, router]);
+  }, [params.id, session?.user, router]);
 
   const handleSave = async (projectData) => {
     setIsLoading(true);

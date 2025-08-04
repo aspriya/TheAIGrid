@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/contexts/AuthContext";
+import SessionProviderWrapper from "@/components/providers/SessionProviderWrapper";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
@@ -25,13 +25,13 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col bg-gray-50`}
       >
-        <AuthProvider>
+        <SessionProviderWrapper>
           <Header />
-          <main className="flex-1 bg-gray-50 py-8">
+          <main className="flex-1 bg-gray-50">
             {children}
           </main>
           <Footer />
-        </AuthProvider>
+        </SessionProviderWrapper>
       </body>
     </html>
   );

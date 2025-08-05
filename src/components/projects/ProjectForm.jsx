@@ -87,7 +87,7 @@ const ProjectForm = ({
   ];
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="max-w-4xl mx-auto space-y-8 py-4 sm:py-8">
       {/* Header */}
       <div className="text-center">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -120,7 +120,7 @@ const ProjectForm = ({
                 onChange={(e) => handleChange('name')(e.target.value)}
                 placeholder="Enter your project name"
                 error={errors.name}
-                className="text-base"
+                className="text-base text-gray-700"
               />
             </div>
 
@@ -134,7 +134,7 @@ const ProjectForm = ({
                 onChange={(e) => handleChange('description')(e.target.value)}
                 placeholder="Describe your project, its features, and what makes it unique..."
                 rows={5}
-                className={`w-full px-4 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base resize-none ${
+                className={`w-full px-4 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base resize-none text-gray-700 ${
                   errors.description ? 'border-red-300' : 'border-gray-300'
                 }`}
               />
@@ -151,7 +151,7 @@ const ProjectForm = ({
               <select
                 value={formData.category}
                 onChange={(e) => handleChange('category')(e.target.value)}
-                className={`w-full px-4 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base ${
+                className={`w-full px-4 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base text-gray-700 ${
                   errors.category ? 'border-red-300' : 'border-gray-300'
                 }`}
               >
@@ -176,7 +176,7 @@ const ProjectForm = ({
                   onChange={(e) => handleChange('demoUrl')(e.target.value)}
                   placeholder="https://your-demo.com"
                   type="url"
-                  className="text-base"
+                  className="text-base text-gray-700"
                 />
               </div>
               <div>
@@ -188,7 +188,7 @@ const ProjectForm = ({
                   onChange={(e) => handleChange('githubUrl')(e.target.value)}
                   placeholder="https://github.com/user/repo"
                   type="url"
-                  className="text-base"
+                  className="text-base text-gray-700"
                 />
               </div>
             </div>

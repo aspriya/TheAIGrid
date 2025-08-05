@@ -82,16 +82,16 @@ const ProjectStatus = ({ status, onChange }) => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2">
                       <h3 className={`text-base font-semibold ${
-                        isSelected ? `text-${option.color}-900` : 'text-gray-900'
+                        isSelected ? 'text-white' : 'text-gray-900'
                       }`}>
                         {option.label}
                       </h3>
                       {isSelected && (
-                        <div className={`w-2 h-2 rounded-full bg-${option.color}-600`} />
+                        <div className="w-2 h-2 rounded-full bg-white/80" />
                       )}
                     </div>
                     <p className={`text-sm mt-1 ${
-                      isSelected ? `text-${option.color}-700` : 'text-gray-600'
+                      isSelected ? 'text-white/90' : 'text-gray-600'
                     }`}>
                       {option.description}
                     </p>

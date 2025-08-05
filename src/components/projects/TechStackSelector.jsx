@@ -76,7 +76,7 @@ const TechStackSelector = ({ selectedTech, onChange, error }) => {
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           placeholder="Search technologies (e.g., React, Python, TensorFlow)..."
-          className={`w-full px-4 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base ${
+          className={`w-full px-4 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base text-gray-700 ${
             error ? 'border-red-300' : 'border-gray-300'
           }`}
         />
@@ -91,7 +91,7 @@ const TechStackSelector = ({ selectedTech, onChange, error }) => {
                     key={tech}
                     type="button"
                     onClick={() => addTechnology(tech)}
-                    className="w-full px-4 py-2 text-left hover:bg-gray-50 focus:bg-gray-50 focus:outline-none text-sm"
+                    className="w-full px-4 py-2 text-left hover:bg-gray-50 focus:bg-gray-50 focus:outline-none text-sm text-gray-700"
                   >
                     {tech}
                   </button>

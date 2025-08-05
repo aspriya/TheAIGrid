@@ -103,33 +103,35 @@ const CollaborationSection = ({ collaborationNeeds, onChange, status }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               {/* Role */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor={`collab-role-${collab.id}`} className="block text-sm font-medium text-gray-700 mb-2">
                   Role Needed
                 </label>
                 <select
                   value={collab.role}
+                  id={`collab-role-${collab.id}`}
                   onChange={(e) => updateCollaboration(collab.id, 'role', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base text-gray-900 bg-white"
                 >
-                  <option value="">Select a role</option>
+                  <option value="" className='text-base text-gray-600'>Select a role</option>
                   {roleOptions.map(role => (
-                    <option key={role} value={role}>{role}</option>
+                    <option key={role} value={role} className='text-base text-gray-900'>{role}</option>
                   ))}
                 </select>
               </div>
 
               {/* Compensation */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor={`collab-compensation-${collab.id}`} className="block text-sm font-medium text-gray-700 mb-2">
                   Compensation
                 </label>
                 <select
+                  id={`collab-compensation-${collab.id}`}
                   value={collab.compensation}
                   onChange={(e) => updateCollaboration(collab.id, 'compensation', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base text-gray-900 bg-white"
                 >
                   {compensationOptions.map(option => (
-                    <option key={option.value} value={option.value}>
+                    <option key={option.value} value={option.value} className='text-base text-gray-900'>
                       {option.label}
                     </option>
                   ))}
@@ -139,29 +141,31 @@ const CollaborationSection = ({ collaborationNeeds, onChange, status }) => {
 
             {/* Profile */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor={`collab-profile-${collab.id}`} className="block text-sm font-medium text-gray-700 mb-2">
                 Ideal Profile
               </label>
               <input
                 type="text"
+                id={`collab-profile-${collab.id}`}
                 value={collab.profile}
                 onChange={(e) => updateCollaboration(collab.id, 'profile', e.target.value)}
                 placeholder="e.g., 2+ years experience in React, familiar with AI APIs"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base text-gray-900 bg-white placeholder-gray-500"
               />
             </div>
 
             {/* Description */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor={`collab-description-${collab.id}`} className="block text-sm font-medium text-gray-700 mb-2">
                 Description
               </label>
               <textarea
+                id={`collab-description-${collab.id}`}
                 value={collab.description}
                 onChange={(e) => updateCollaboration(collab.id, 'description', e.target.value)}
                 placeholder="Describe what this person will work on and what you expect from them..."
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-base text-gray-900 bg-white placeholder-gray-500"
               />
             </div>
 
@@ -185,33 +189,35 @@ const CollaborationSection = ({ collaborationNeeds, onChange, status }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               {/* Role */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="new-collab-role" className="block text-sm font-medium text-gray-700 mb-2">
                   Role Needed *
                 </label>
                 <select
+                  id="new-collab-role"
                   value={newCollaboration.role}
                   onChange={(e) => setNewCollaboration(prev => ({ ...prev, role: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base text-gray-900 bg-white"
                 >
-                  <option value="">Select a role</option>
+                  <option value="" className='text-base text-gray-600'>Select a role</option>
                   {roleOptions.map(role => (
-                    <option key={role} value={role}>{role}</option>
+                    <option key={role} value={role} className='text-base text-gray-900'>{role}</option>
                   ))}
                 </select>
               </div>
 
               {/* Compensation */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="new-collab-compensation" className="block text-sm font-medium text-gray-700 mb-2">
                   Compensation
                 </label>
                 <select
+                  id="new-collab-compensation"
                   value={newCollaboration.compensation}
                   onChange={(e) => setNewCollaboration(prev => ({ ...prev, compensation: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base text-gray-900 bg-white"
                 >
                   {compensationOptions.map(option => (
-                    <option key={option.value} value={option.value}>
+                    <option key={option.value} value={option.value} className='text-base text-gray-900'>
                       {option.label}
                     </option>
                   ))}
@@ -221,29 +227,31 @@ const CollaborationSection = ({ collaborationNeeds, onChange, status }) => {
 
             {/* Profile */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="new-collab-profile" className="block text-sm font-medium text-gray-700 mb-2">
                 Ideal Profile *
               </label>
               <input
                 type="text"
+                id="new-collab-profile"
                 value={newCollaboration.profile}
                 onChange={(e) => setNewCollaboration(prev => ({ ...prev, profile: e.target.value }))}
                 placeholder="e.g., 2+ years experience in React, familiar with AI APIs"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base text-gray-900 bg-white placeholder-gray-500"
               />
             </div>
 
             {/* Description */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="new-collab-description" className="block text-sm font-medium text-gray-700 mb-2">
                 Description
               </label>
               <textarea
+                id="new-collab-description"
                 value={newCollaboration.description}
                 onChange={(e) => setNewCollaboration(prev => ({ ...prev, description: e.target.value }))}
                 placeholder="Describe what this person will work on and what you expect from them..."
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-base text-gray-900 bg-white placeholder-gray-500"
               />
             </div>
 

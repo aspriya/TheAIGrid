@@ -62,7 +62,7 @@ const PricingSection = ({ isForSale, price, onToggleSale, onPriceChange, error }
                   onChange={(e) => onPriceChange(e.target.value)}
                   placeholder="0"
                   min="1"
-                  className={`w-full pl-8 pr-4 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base ${
+                  className={`w-full pl-8 pr-4 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base text-gray-700 ${
                     error ? 'border-red-300' : 'border-gray-300'
                   }`}
                 />

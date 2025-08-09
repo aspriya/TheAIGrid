@@ -3,32 +3,22 @@
 import { useState } from 'react';
 import { 
   EyeIcon, 
-  HandThumbUpIcon, 
   ShareIcon,
   ExternalLinkIcon,
   CodeBracketIcon,
   CalendarIcon,
-  UserIcon,
-  TagIcon,
   CurrencyDollarIcon,
   UserGroupIcon,
   ChevronDownIcon,
   ChevronUpIcon
 } from '@heroicons/react/24/outline';
-import { HandThumbUpIcon as HandThumbUpSolidIcon } from '@heroicons/react/24/solid';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 
-const ProjectDetail = ({ project, currentUser, onUpvote, onContact }) => {
-  const [isUpvoted, setIsUpvoted] = useState(false);
+const ProjectDetail = ({ project, currentUser, onContact }) => {
   const [showAllCollaborations, setShowAllCollaborations] = useState(false);
   const [expandedCollab, setExpandedCollab] = useState(null);
-
-  const handleUpvote = () => {
-    setIsUpvoted(!isUpvoted);
-    onUpvote?.(project.id, !isUpvoted);
-  };
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -43,7 +33,6 @@ const ProjectDetail = ({ project, currentUser, onUpvote, onContact }) => {
       }
     } else {
       navigator.clipboard.writeText(window.location.href);
-      // You could show a toast notification here
     }
   };
 
@@ -97,6 +86,11 @@ const ProjectDetail = ({ project, currentUser, onUpvote, onContact }) => {
               ⭐ Featured
             </Badge>
           )}
+          {project.spotlight && (
+            <Badge variant="pink" size="lg">
+              ✨ Spotlight Boost
+            </Badge>
+          )}
         </div>
         
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -113,24 +107,6 @@ const ProjectDetail = ({ project, currentUser, onUpvote, onContact }) => {
             <EyeIcon className="w-5 h-5" />
             <span className="text-sm font-medium">{project.views} views</span>
           </div>
-          
-          <button
-            onClick={handleUpvote}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-              isUpvoted 
-                ? 'bg-blue-100 text-blue-700' 
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
-          >
-            {isUpvoted ? (
-              <HandThumbUpSolidIcon className="w-5 h-5" />
-            ) : (
-              <HandThumbUpIcon className="w-5 h-5" />
-            )}
-            <span className="text-sm font-medium">
-              {project.upvotes + (isUpvoted ? 1 : 0)} upvotes
-            </span>
-          </button>
 
           <button
             onClick={handleShare}
@@ -288,6 +264,16 @@ const ProjectDetail = ({ project, currentUser, onUpvote, onContact }) => {
             </div>
           </Card>
 
+          {/* Spotlight info card (only if spotlighted) */}
+          {project.spotlight && (
+            <Card className="p-6 bg-amber-50 border-amber-200">
+              <h3 className="text-lg font-bold text-amber-900 mb-2">Spotlight Boost</h3>
+              <p className="text-sm text-amber-800">
+                This project is boosted to appear before free listings for increased visibility.
+              </p>
+            </Card>
+          )}
+
           {/* Pricing */}
           {project.isForSale && project.price && (
             <Card className="p-6">
@@ -308,7 +294,7 @@ const ProjectDetail = ({ project, currentUser, onUpvote, onContact }) => {
             </Card>
           )}
 
-          {/* Category & Tags */}
+          {/* Category */}
           <Card className="p-6">
             <h3 className="text-lg font-bold text-gray-900 mb-4">Details</h3>
             <div className="space-y-3">
@@ -316,19 +302,6 @@ const ProjectDetail = ({ project, currentUser, onUpvote, onContact }) => {
                 <label className="block text-sm font-medium text-gray-600 mb-1">Category</label>
                 <Badge variant="purple">{project.category}</Badge>
               </div>
-              
-              {project.tags && project.tags.length > 0 && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-2">Tags</label>
-                  <div className="flex flex-wrap gap-1">
-                    {project.tags.map(tag => (
-                      <Badge key={tag} variant="gray" size="sm">
-                        #{tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           </Card>
         </div>

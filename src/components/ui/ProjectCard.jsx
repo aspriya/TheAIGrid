@@ -33,6 +33,15 @@ const ProjectCard = ({
       padding="none" 
       className={`group h-full flex flex-col bg-white/90 backdrop-blur-md border-0 shadow-lg hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-4 hover:scale-[1.02] rounded-3xl overflow-hidden relative ${className}`}
     >
+      {/* Spotlight Boost ribbon */}
+      {projectData.spotlight && (
+        <div className="absolute top-4 right-4 z-20">
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-amber-500 to-pink-500 text-white shadow-lg">
+            <span aria-hidden>✨</span> Spotlight Boost
+          </span>
+        </div>
+      )}
+
       {/* Modern gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-purple-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
       

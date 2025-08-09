@@ -1,0 +1,172 @@
+@startuml TheAIGrid ER Diagram
+hide methods
+hide stereotypes
+skinparam classAttributeIconSize 0
+
+' Core auth (NextAuth)
+entity "User" as User {
+  +id: String <<PK>>
+  --
+  name: String?
+  email: String? <<UNIQUE>>
+  emailVerified: DateTime?
+  image: String?
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+entity "Account" as Account {
+  +id: String <<PK>>
+  userId: String <<FK>>
+  type: String
+  provider: String
+  providerAccountId: String
+  refresh_token: String?
+  access_token: String?
+  expires_at: Int?
+  token_type: String?
+  scope: String?
+  id_token: String?
+  session_state: String?
+  --
+  UNIQUE(provider, providerAccountId)
+}
+
+entity "Session" as Session {
+  +id: String <<PK>>
+  sessionToken: String <<UNIQUE>>
+  userId: String <<FK>>
+  expires: DateTime
+}
+
+entity "VerificationToken" as VerificationToken {
+  identifier: String
+  token: String <<UNIQUE>>
+  expires: DateTime
+  --
+  UNIQUE(identifier, token)
+}
+
+' Domain
+entity "Project" as Project {
+  +id: String <<PK>>
+  ownerUserId: String <<FK>>
+  name: String
+  slug: String <<UNIQUE>>
+  description: String
+  status: ProjectStatus
+  visibility: Visibility
+  category: String
+  demoUrl: String?
+  repoUrl: String?
+  featured: Boolean
+  spotlight: Boolean
+  spotlightPurchasedAt: DateTime?
+  viewsCount: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+  archivedAt: DateTime?
+}
+
+entity "Technology" as Technology {
+  +id: String <<PK>>
+  name: String <<UNIQUE>>
+  category: String?
+  createdAt: DateTime
+}
+
+entity "ProjectTechnology" as ProjectTechnology {
+  projectId: String <<FK>>
+  technologyId: String <<FK>>
+  --
+  PK(projectId, technologyId)
+}
+
+entity "CollaborationNeed" as CollaborationNeed {
+  +id: String <<PK>>
+  projectId: String <<FK>>
+  role: String
+  profile: String
+  compensation: Compensation
+  description: String?
+  isOpen: Boolean
+  createdAt: DateTime
+  closedAt: DateTime?
+}
+
+entity "Message" as Message {
+  +id: String <<PK>>
+  projectId: String <<FK>>
+  senderUserId: String <<FK>>
+  recipientUserId: String <<FK>>
+  body: String
+  createdAt: DateTime
+  readAt: DateTime?
+}
+
+entity "Payment" as Payment {
+  +id: String <<PK>>
+  userId: String <<FK>>
+  projectId: String <<FK>> (nullable)
+  type: PaymentType
+  amountCents: Int
+  currency: String
+  provider: String?
+  providerRef: String?
+  status: PaymentStatus
+  meta: Json?
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+' Enums (for reference)
+enum ProjectStatus {
+  draft
+  seeking_collaboration
+  open_to_collaboration
+  showcase_only
+  for_sale
+  completed
+}
+
+enum Visibility {
+  public
+  unlisted
+  private
+}
+
+enum Compensation {
+  paid
+  equity
+  revenue_share
+  volunteer
+  negotiable
+}
+
+enum PaymentType {
+  EXTRA_PROJECT
+  SPOTLIGHT
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+}
+
+' Relationships
+User ||--o{ Account : has
+User ||--o{ Session : has
+User ||--o{ Project : owns
+User ||--o{ Message : sends
+User ||--o{ Message : receives
+User ||--o{ Payment : has
+
+Project ||--o{ ProjectTechnology : includes
+Technology ||--o{ ProjectTechnology : tags
+
+Project ||--o{ CollaborationNeed : has
+Project ||--o{ Message : has
+Project ||--o{ Payment : payments
+
+@enduml

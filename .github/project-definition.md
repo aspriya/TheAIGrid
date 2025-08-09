@@ -9,7 +9,7 @@ TheAIGrid is built on the principle of flexibility. We recognize that in today's
 Any user can:
 * **List a Project:** Showcase an AI application, define its status (e.g., for sale, seeking partners), and outline collaboration needs.
 * **Lend Your Expertise:** Offer your skills in business, marketing, design, or a specific industry to join and grow a promising venture.
-* **Acquire a Venture:** Browse for mature applications or micro-businesses to purchase or invest in.
+* **Connect with Acquirers/Investors:** Browse and be discovered by users looking to acquire or invest in mature applications.
 
 ## Look and Feel
 
@@ -33,41 +33,71 @@ Any user can wear any hat at any time.
 
 ### Profile & Account Management
 * As a User, I can securely sign in or up using my Google account.
-* As a User, I can create a single, unified profile that serves all my needs. This profile will have distinct sections I can fill out:
-    * A general bio.
-    * A section for **"My Expertise"** where I can list my skills, industry knowledge, and what I look for in a collaboration (my "Collaborator" hat).
-    * A section for **"My Projects"** which will automatically display projects I have listed (my "Creator" hat).
+* As a User, I can create a single, unified profile that serves all my needs, including:
+  * A general bio.
+  * A section for **"My Expertise"** where I can list my skills, industry knowledge, and what I look for in a collaboration (my "Collaborator" hat).
+  * A section for **"My Projects"** which will automatically display projects I have listed (my "Creator" hat).
 
 ### Project Creation & Management
-* As a User, I can list a new AI project. The listing form will include:
-    * Standard project details (name, description, demo link, tech stack).
-    * An option to set a sale price if the project is for sale.
-    * A dedicated **"Collaboration Opportunities"** section to define the talent needed (e.g., Role: Co-founder, Profile: Hustler/Marketing, Compensation: Equity Only).
+* As a User, I can list a new AI project with:
+  * Standard project details (name, description, demo link, tech stack).
+  * An option to set a sale price if the project is for sale.
+  * A dedicated **"Collaboration Opportunities"** section to define the talent needed (e.g., Role: Co-founder, Profile: Marketing, Compensation: Equity Only).
 * As a User, I can edit or unlist my projects at any time.
 
 ### Discovery & Interaction
 * As a User, I can browse, search, and filter all listed projects.
-* As a User, my search filters will be powerful, allowing me to find exactly what I'm looking for, whether it's:
-    * Projects for sale within a certain price range.
-    * Projects built with a specific technology (e.g., `Next.js`).
-    * Projects looking for a specific skill I possess (e.g., `SaaS Marketing`).
+* As a User, I can filter by technology, category, price (if for sale), and project status.
 * As a User, I can view any project's details, including its collaboration needs and the profile of the user who created it.
-* As a User, I can express interest in a project, which sends a notification to the project owner.
-* As a User, I can upvote projects I find promising and save them to a personal "Watchlist".
+* As a User, I can express interest in a project, which sends a message to the project owner. Messaging is kept simple in MVP: any interested user can send a message to the owner of a project (scoped per project).
+
+## Monetization and Listing Rules (MVP)
+
+To keep the platform sustainable while remaining accessible:
+
+* **Free Listings:** Each user can publish up to **3 projects for free**.
+* **Additional Listings:** Each project beyond the free quota costs **$3 USD** (Payment type: `EXTRA_PROJECT`).
+* **Spotlight Boost:** Users can optionally elevate a project to appear before free listings for **$5 USD** (Payment type: `SPOTLIGHT`). Spotlighted projects are prioritized in listings.  
+  Name: **Spotlight Boost**.
+* **Payments:** Stripe will be used as the payment provider (integration to be configured). Until then, payments can be stubbed in development.
+* **No On‑Platform Acquisition Payments:** The platform does not process acquisition/sale transactions. Interested parties connect on-platform, then continue offline/externally.
 
 ## Tech Stack for MVP (Iteration 1) 🚀
 
 * **Framework:** Latest LTS Next.js (15+) with JavaScript
-* **Styling:** Tailwind CSS
-* **Authentication:** NextAuth.js (for Google OAuth 2.0 and future provider extensibility)
-* **Database:** Cloud Firestore
-    * **Key Design Decision:** There will be **no `role` field** in the `users` collection. A user's capabilities are defined by their associated data (e.g., owning a document in the `projects` collection makes them a "Creator"; having skills in their profile makes them a "Collaborator"). This ensures maximum flexibility.
-* **File Storage:** Cloud Storage for Firebase (for hosting user-uploaded images and demo videos)
-* **Future Considerations:** For scaling post-MVP, explore a dedicated search service (e.g., Algolia) for faster, more complex queries, and a robust messaging service (e.g., Sendbird or build on Firebase).ion-oriented model. This version will serve as a clear and robust blueprint for your development.
+* **Styling:** Tailwind CSS (v4)
+* **Authentication:** NextAuth.js (Google OAuth 2.0; Prisma Adapter)
+* **Database:** PostgreSQL (Vercel Postgres/Neon) via **Prisma ORM**
+  * Rationale: strong relational filtering (technologies, categories, ownership), robust migrations, and first‑class Next.js support.
+* **Payments:** Stripe (planned; to power extra listings and Spotlight Boost)
+* **File Storage:** TBD (can be added later for images/videos)
+* **Future Considerations:** For scaling post-MVP, explore a dedicated search service (e.g., Algolia) and consider a richer messaging service (e.g., Sendbird or custom service). 
+
+## Data Model (MVP)
+
+High-level relational entities (Prisma-ready):
+
+* **User, Account, Session, VerificationToken** (NextAuth)
+* **Project**: ownerUserId, name, slug, description, status, visibility, category, demoUrl, repoUrl, featured, `spotlight` (bool), `spotlightPurchasedAt` (datetime), `viewsCount`, timestamps
+* **Technology** and **ProjectTechnology** (many-to-many) for stack filtering
+* **CollaborationNeed**: projectId, role, profile, compensation, description, isOpen
+* **Message**: simple per-project messages (projectId, senderUserId, recipientUserId, body, readAt)
+* **Payment**: userId, projectId (nullable), type (`EXTRA_PROJECT` | `SPOTLIGHT`), amountCents, currency, provider refs, status
+
+Notes:
+* Spotlight Boost is represented as a boolean on Project with purchase timestamp and is prioritized in sorting.
+
+## Roadmap After MVP
+
+* Full-text search / external search (Algolia)
+* Richer messaging (threads, attachments, read receipts)
+* Organization/workspaces (multi-tenant)
+* Analytics dashboards and daily aggregates
+* Image/video storage & media processing
+* Subscription plans for power users (limits, analytics, messaging)
 
 ## Potential Monetization Paths (Post-MVP)
 
-* **Freemium Model:** Users can list/browse for free.
-* **Premium Listings:** Users can pay a fee to "feature" or "promote" their project for higher visibility.
-* **Subscription for Power Users:** Users can pay a monthly subscription for advanced features like detailed analytics, enhanced search filters, and direct messaging capabilities.
-* **Success Fee / Escrow:** Charge a small commission (e.g., 3-5%) on the final sale price when a project is acquired through the platform.
+* **Premium Listings:** Extend Spotlight Boost options (e.g., longer duration, category highlights).
+* **Subscription for Power Users:** Monthly subscription for advanced features like analytics, enhanced filters, and richer messaging.
+* (Optional, future) **Success Fee / Escrow:** If ever introduced, process externally or via partners; not in scope for MVP.

@@ -38,7 +38,7 @@ export default function AboutPage() {
     {
       icon: ChartBarIcon,
       title: 'Track Performance',
-      description: 'See how your projects perform with upvotes, views, and community feedback.'
+      description: 'See how your projects perform with views and interest from the community.'
     },
     {
       icon: GlobeAltIcon,

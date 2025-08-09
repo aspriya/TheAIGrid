@@ -22,11 +22,11 @@ const ProjectForm = ({
     demoUrl: project?.demoUrl || '',
     githubUrl: project?.githubUrl || '',
     category: project?.category || '',
-    tags: project?.tags || [],
     status: project?.status || 'seeking-collaboration',
     isForSale: project?.isForSale || false,
     price: project?.price || '',
-    collaborationNeeds: project?.collaborationNeeds || []
+    collaborationNeeds: project?.collaborationNeeds || [],
+    spotlight: project?.spotlight || false,
   });
 
   const [errors, setErrors] = useState({});
@@ -72,7 +72,6 @@ const ProjectForm = ({
     if (!project) {
       projectData.id = `project-${Date.now()}`;
       projectData.createdAt = new Date().toISOString().split('T')[0];
-      projectData.upvotes = 0;
       projectData.views = 0;
       projectData.featured = false;
     }
@@ -96,8 +95,10 @@ const ProjectForm = ({
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
           {project 
             ? 'Update your project details and collaboration needs'
-            : 'Share your AI project with the community and find collaborators'
-          }
+            : 'Share your AI project with the community and find collaborators'}
+        </p>
+        <p className="text-sm text-amber-700 mt-2">
+          You can post up to 3 projects for free. Additional projects are $3 each. Optionally apply <strong>Spotlight Boost</strong> ($5) to put this project ahead of free listings.
         </p>
       </div>
 
@@ -237,6 +238,23 @@ const ProjectForm = ({
           onChange={handleChange('collaborationNeeds')}
           status={formData.status}
         />
+
+        {/* Spotlight Boost (UI hint) */}
+        <Card className="p-8">
+          <div className="mb-4">
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Spotlight Boost</h2>
+            <p className="text-gray-600 text-sm">Boost this project to the top of listings for increased visibility ($5).</p>
+          </div>
+          <label className="inline-flex items-center gap-3">
+            <input
+              type="checkbox"
+              checked={formData.spotlight}
+              onChange={(e) => handleChange('spotlight')(e.target.checked)}
+              className="w-5 h-5"
+            />
+            <span className="text-gray-800">Enable Spotlight Boost</span>
+          </label>
+        </Card>
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-end pt-8">

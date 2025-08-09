@@ -92,15 +92,18 @@ const ProjectGrid = ({
       return true;
     });
 
-    // Sort projects
+    // Sort projects (Spotlight Boost first, then existing sort)
     filtered.sort((a, b) => {
+      // Spotlight Boost precedence
+      const aSpot = a.spotlight ? 1 : 0;
+      const bSpot = b.spotlight ? 1 : 0;
+      if (aSpot !== bSpot) return bSpot - aSpot;
+
       switch (sortBy) {
         case 'newest':
           return new Date(b.createdAt) - new Date(a.createdAt);
         case 'oldest':
           return new Date(a.createdAt) - new Date(b.createdAt);
-        case 'most-upvoted':
-          return (b.upvotes || 0) - (a.upvotes || 0);
         case 'most-viewed':
           return (b.views || 0) - (a.views || 0);
         case 'price-low':
@@ -161,7 +164,6 @@ const ProjectGrid = ({
   const sortOptions = [
     { value: 'newest', label: 'Newest First' },
     { value: 'oldest', label: 'Oldest First' },
-    { value: 'most-upvoted', label: 'Most Upvoted' },
     { value: 'most-viewed', label: 'Most Viewed' },
     { value: 'price-low', label: 'Price: Low to High' },
     { value: 'price-high', label: 'Price: High to Low' },
@@ -177,6 +179,10 @@ const ProjectGrid = ({
           <p className="text-gray-600 mt-1">
             {filteredProjects.length} project{filteredProjects.length !== 1 ? 's' : ''}
             {hasActiveFilters && ` (filtered from ${projects.length})`}
+          </p>
+          {/* Spotlight hint */}
+          <p className="text-xs text-amber-700 mt-1">
+            Spotlight Boost projects appear first in results.
           </p>
         </div>
 
